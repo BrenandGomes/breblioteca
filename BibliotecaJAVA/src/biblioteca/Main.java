@@ -4,6 +4,7 @@ import entidades.Livro;
 import entidades.Usuario;
 import excecoes.LivroNaoEncontradoException;
 import excecoes.UsuarioNaoEncontradoException;
+import excecoes.LivroIndisponivelException;
 import servicos.LivroServico;
 import servicos.UsuarioServico;
 import servicos.EmprestimoServico;
@@ -146,15 +147,19 @@ public class Main {
         System.out.print("ID do Livro: ");
         int livroId = scanner.nextInt();
 
-        emprestimoServico.emprestarLivro(usuarioId, livroId);
-        System.out.println("Livro emprestado com sucesso.");
+        try {
+            emprestimoServico.emprestar(usuarioId, livroId);
+            System.out.println("Livro emprestado com sucesso.");
+        } catch (LivroIndisponivelException e) {
+            System.out.println("Erro: " + e.getMessage());
+        }
     }
 
     private static void devolverLivro() {
         System.out.print("ID do Empréstimo: ");
         int emprestimoId = scanner.nextInt();
 
-        emprestimoServico.devolverLivro(emprestimoId);
+        emprestimoServico.devolver(emprestimoId);
         System.out.println("Livro devolvido com sucesso.");
     }
 
